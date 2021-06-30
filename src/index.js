@@ -1,9 +1,10 @@
 import { GraphQLServer } from 'graphql-yoga';
 
-import { Query, Post, User, Picture } from './graphql/resolvers/index';
+import { Query, Mutation, Post, User, Picture } from './graphql/resolvers/index';
 
 const resolvers = {
   Query,
+  Mutation,
   Post,
   User,
   Picture,

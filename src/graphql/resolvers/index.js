@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const db = 'http://localhost:3004';
 
+// Query Resolvers
+// This is to resolve all the 'type Query' in our Schema file
 const Query = {
   // NOTE - Resolvers Function has a default args - parent, args, context, info
   agent: async (parent, args, context, info) => {
@@ -46,14 +48,88 @@ const Query = {
   },
 };
 
+// we also need to match the MUTATION Structure Schema also
+// Mutation is a function that returns the value
+const Mutation = {
+  createAgent: async (parent, args, context, info) => {
+    const response = await axios.post(`${db}/users`, {
+      name: args.name,
+      age: args.age,
+      married: args.married,
+      average: 0,
+    });
+    return response.data;
+  },
+
+  createPost: async (parent, args, context, info) => {
+    const response = await axios.post(`${db}/posts`, {
+      title: args.title,
+      content: args.content,
+      // additional fields with hard coding values
+      author: 1,
+      picture: 1,
+    });
+    return response.data;
+  },
+
+  deletePost: async (parent, args, context, info) => {
+    const response = await axios.delete(`${db}/posts/${args.id}`);
+    // console.log(response);
+
+    // if no keys
+    if (Object.keys(response.data).length === 0) {
+      return true;
+    }
+    return false;
+  },
+
+  deleteAgent: async (parent, args, context, info) => {
+    const response = await axios.delete(`${db}/users/${args.id}`);
+
+    // find all posts related to user & delete them
+    // find all pictures - delete them
+    // NOTE - To keep NON-NULLABLE options & to avoid Errors
+
+    if (Object.keys(response.data).length === 0) {
+      return true;
+    }
+    return false;
+  },
+
+  updateAgent: async (parent, args, context, info) => {
+    let data = {};
+
+    // if defined, put values in our new object above
+    if (args.name !== undefined) {
+      data.name = args.name;
+    }
+    if (args.age !== undefined) {
+      data.age = args.age;
+    }
+    if (args.married !== undefined) {
+      data.married = args.married;
+    }
+    if (args.average !== undefined) {
+      data.average = args.average;
+    }
+
+    const response = await axios.patch(`${db}/users/${args.id}`, data);
+    return response.data;
+  },
+};
+
 // New Resolver Object Types for Relationships
 
 // Relationship between two Schema Types From Post to User & Post to Picture
 const Post = {
   // 'parentValue' is the Parent Data table - 'Post'
   author: async (parent, args, context, info) => {
-    const response = await axios.get(`${db}/users/${parent.author}`);
-    return response.data;
+    try {
+      const response = await axios.get(`${db}/users/${parent.author}`);
+      return response.data;
+    } catch (err) {
+      console.error(err);
+    }
   },
   picture: async (parent, args, context, info) => {
     const response = await axios.get(`${db}/pictures/${parent.picture}`);
@@ -83,4 +159,4 @@ const Picture = {
   },
 };
 
-export { Query, Post, User, Picture };
+export { Query, Mutation, Post, User, Picture };

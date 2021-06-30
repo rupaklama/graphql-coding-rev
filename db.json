@@ -1,16 +1,8 @@
 {
   "users": [
     {
-      "id": 1,
-      "name": "Rajesh",
-      "age": 23,
-      "married": true,
-      "average": 4.5,
-      "status": "active"
-    },
-    {
       "id": 2,
-      "name": "Lisa",
+      "name": "Sajina",
       "age": 27,
       "married": true,
       "average": 4.5,

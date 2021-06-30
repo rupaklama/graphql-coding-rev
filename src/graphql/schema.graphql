@@ -2,6 +2,9 @@
 # !  - is required & the 'return value' is NOT to be NULL
 # []! - required & the whole thing must be NON-NULLABLE, NOT NULL
 
+# Type Query is to READ DATA without modifying
+# NOTE - All Queries must return result/response object
+# right side of the ':' is the response object
 type Query {
   agent(id: ID!): User!
   agents(name: String, age: Int): [User!]!
@@ -28,7 +31,7 @@ type Post {
   id: ID!
   title: String
   content: String
-  author: User!
+  author: User
   picture: Picture!
 }
 
@@ -37,4 +40,13 @@ type Picture {
   path: String!
   author: User!
   post: Post!
+}
+
+# MUTATION TYPE - Mutation is to change data directly.
+type Mutation {
+  createAgent(name: String!, age: Int, married: Boolean): User!
+  createPost(title: String, content: String!): Post!
+  deletePost(id: ID!): Boolean!
+  deleteAgent(id: ID!): Boolean!
+  updateAgent(id: ID!, name: String, age: Int, married: Boolean, average: Float): User!
 }
