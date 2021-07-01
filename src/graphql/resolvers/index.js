@@ -53,10 +53,12 @@ const Query = {
 const Mutation = {
   createAgent: async (parent, args, context, info) => {
     const response = await axios.post(`${db}/users`, {
-      name: args.name,
-      age: args.age,
-      married: args.married,
+      // data - Input types
+      name: args.data.name,
+      age: args.data.age,
+      married: args.data.married,
       average: 0,
+      status: args.data.status,
     });
     return response.data;
   },
@@ -68,6 +70,7 @@ const Mutation = {
       // additional fields with hard coding values
       author: 1,
       picture: 1,
+      status: args.status,
     });
     return response.data;
   },
@@ -100,17 +103,20 @@ const Mutation = {
     let data = {};
 
     // if defined, put values in our new object above
-    if (args.name !== undefined) {
-      data.name = args.name;
+    if (args.data.name !== undefined) {
+      data.name = args.data.name;
     }
-    if (args.age !== undefined) {
-      data.age = args.age;
+    if (args.data.age !== undefined) {
+      data.age = args.data.age;
     }
-    if (args.married !== undefined) {
-      data.married = args.married;
+    if (args.data.married !== undefined) {
+      data.married = args.data.married;
     }
-    if (args.average !== undefined) {
-      data.average = args.average;
+    if (args.data.average !== undefined) {
+      data.average = args.data.average;
+    }
+    if (args.data.status !== undefined) {
+      data.status = args.data.status;
     }
 
     const response = await axios.patch(`${db}/users/${args.id}`, data);

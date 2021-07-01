@@ -17,12 +17,17 @@ type Query {
   multiply(value: Int!): Int
 }
 
+# adding new field 'status' here with Enum Type - AgentState
+# this works since we are providing an Enum that has the same value 'not_active' as in "status": "not_active"
 type User {
   id: ID!
   name: String!
   age: Int
   married: Boolean
   average: Float
+
+  status: AgentState!
+
   posts: [Post!]!
   pictures: [Picture!]!
 }
@@ -33,6 +38,8 @@ type Post {
   content: String
   author: User
   picture: Picture!
+
+  status: PostStatus
 }
 
 type Picture {
@@ -44,9 +51,48 @@ type Picture {
 
 # MUTATION TYPE - Mutation is to change data directly.
 type Mutation {
-  createAgent(name: String!, age: Int, married: Boolean): User!
-  createPost(title: String, content: String!): Post!
+  # Instead of passing multiple arguments here, we can pass a 'Single Argument' with Input Types
+  createAgent(data: CreateAgentInput!): User!
+  # adding new field 'status' here with Enum Type - PostStatus
+  createPost(title: String, content: String!, status: PostStatus!): Post!
   deletePost(id: ID!): Boolean!
   deleteAgent(id: ID!): Boolean!
-  updateAgent(id: ID!, name: String, age: Int, married: Boolean, average: Float): User!
+  updateAgent(id: ID!, data: UpdateAgentInput!): User!
+}
+
+# NOTE - Things like accepting 'Single Input Argument' for each Mutation are some of the 'Best Practices'
+# Input Types are Argument Types to pass into Mutation to avoid passing lots of arguments
+# This will make it lot easier on Client Side to call our APIs
+# It's common to name Input Type by adding 'input' at the end
+input CreateAgentInput {
+  # Arguments are pass down as Fields here
+  name: String!
+  age: Int!
+  married: Boolean
+  status: AgentState!
+}
+
+input UpdateAgentInput {
+  name: String
+  age: Int
+  married: Boolean
+  average: Float
+  status: AgentState
+}
+
+# ALL THE BELOWS ARE UTILITY TYPES - not as important as above ones
+
+# Enums (Enumeration) Types - set of values, useful to VALIDATE DATA
+# we can add different values & as long as its one of them, it will pass the validation
+# an agent might have all these 'values' on field - "status": "not_active"
+enum AgentState {
+  active
+  not_active
+  trainee
+  guest
+}
+
+enum PostStatus {
+  PUBLISHED
+  DRAFT
 }

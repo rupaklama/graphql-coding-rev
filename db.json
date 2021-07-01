@@ -1,8 +1,16 @@
 {
   "users": [
     {
+      "id": 1,
+      "name": "Rajesh",
+      "age": 23,
+      "married": true,
+      "average": 4.5,
+      "status": "active"
+    },
+    {
       "id": 2,
-      "name": "Sajina",
+      "name": "Lisa",
       "age": 27,
       "married": true,
       "average": 4.5,
@@ -23,6 +31,14 @@
       "married": true,
       "average": 2.5,
       "status": "guest"
+    },
+    {
+      "name": "Robin",
+      "age": 23,
+      "married": true,
+      "average": 0,
+      "status": "not_active",
+      "id": 5
     }
   ],
   "posts": [
@@ -88,6 +104,14 @@
       "author": 1,
       "picture": 2,
       "id": 9
+    },
+    {
+      "title": "Awesome post",
+      "content": "Some super awesome post",
+      "author": 1,
+      "picture": 1,
+      "status": "DRAFT",
+      "id": 10
     }
   ],
   "pictures": [
